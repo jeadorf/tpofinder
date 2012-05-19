@@ -1,0 +1,18 @@
+%YAML:1.0
+train: !!opencv-matrix
+    rows: 4
+    cols: 1
+    dt: "2f"
+    data: [ 260., 157.,
+            268., 305.,
+            268., 305.,
+            268., 305. ]
+ref: !!opencv-matrix
+    rows: 4
+    cols: 1
+    dt: "2f"
+    data: [ 276., 198.,
+            276., 348.,
+            446., 348.,
+            438., 212. ]
+

@@ -1,0 +1,6 @@
+%YAML:1.0
+color: !!opencv-matrix
+   rows: 1
+   cols: 4
+   dt: u
+   data: [ 0, 255, 0, 255]
