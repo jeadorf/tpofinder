@@ -264,6 +264,21 @@ TEST_F(model_blokus, visualizeSecondViewKeypoints) {
     imshow("model_blokus.visualizeSecondViewKeypoints", out);
 }
 
+TEST_F(model_blokus, visualizeThirdViewKeypoints) {
+    Mat out;
+    PlanarView& v = blokusModel.views[2];
+    drawKeypoints(v.roi, v.keypoints, out);
+    imshow("model_blokus.visualizeThirdViewKeypoints", out);
+}
+
+TEST_F(model_blokus, visualizeFourthViewKeypoints) {
+    Mat out;
+    PlanarView& v = blokusModel.views[3];
+    drawKeypoints(v.roi, v.keypoints, out);
+    imshow("model_blokus.visualizeFourthViewKeypoints", out);
+}
+
+
 TEST_F(model_blokus, visualizeAllKeypoints) {
     Mat out;
     PlanarView v = blokusModel.views[0];
