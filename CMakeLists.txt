@@ -27,12 +27,10 @@ target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
 add_executable(model_homography apps/model_homography.cpp)
 add_executable(sequence_homography apps/sequence_homography.cpp)
 add_executable(invert_homography apps/invert_homography.cpp)
-add_executable(webcam apps/webcam.cpp)
 add_executable(tpofind apps/tpofind.cpp)
 target_link_libraries(model_homography ${PROJECT_NAME})
 target_link_libraries(sequence_homography ${PROJECT_NAME})
 target_link_libraries(invert_homography ${PROJECT_NAME})
-target_link_libraries(webcam ${PROJECT_NAME})
 target_link_libraries(tpofind ${PROJECT_NAME})
 
 # Testing

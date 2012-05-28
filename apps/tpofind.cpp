@@ -25,6 +25,8 @@ bool webcam = false;
 vector<string> files;
 
 VideoCapture *capture = NULL;
+Mat image;
+int frame = 0;
 
 void processCommandLine(int argc, char* argv[]) {
     po::options_description named_opts;
@@ -79,6 +81,39 @@ void loadModel(Modelbase& modelbase, const string& path) {
     }
 }
 
+void nextImage() {
+    if (webcam) {
+        *capture >> image;
+    } else if (files.size() > 0) {
+        image = imread(files[frame]);
+    } else {
+        string s;
+        getline(cin, s);
+        image = imread(s);
+    }
+    frame++;
+}
+
+bool hasNextImage() {
+    return frame < files.size();
+}
+
+void processImage(Detector& detector) {
+    if (!image.empty()) {
+        Scene scene = detector.describe(image);
+
+        vector<Detection> detections = detector.detect(scene);
+
+        BOOST_FOREACH(Detection d, detections) {
+            drawDetection(image, d);
+        }
+    }
+}
+
+bool readFromCommandLine() {
+    return files.size() > 0;
+}
+
 int main(int argc, char* argv[]) {
     processCommandLine(argc, argv);
 
@@ -115,36 +150,15 @@ int main(int argc, char* argv[]) {
     }
 
     int i = 0;
-    while (webcam || i < files.size()) {
-        Mat image;
-
-        if (webcam) {
-            *capture >> image;
-        } else if (files.size() > 0) {
-            image = imread(files[i]);
-            i++;
-        } else {
-            string s;
-            getline(cin, s);
-            image = imread(s);
-        }
-
-        if (!image.empty()) {
-            Scene scene = detector.describe(image);
-
-            vector<Detection> detections = detector.detect(scene);
-
-            BOOST_FOREACH(Detection d, detections) {
-                drawDetection(image, d);
-            }
-        }
-
+    while (hasNextImage()) {
+        nextImage();
+        processImage(detector);
         imshow(NAME, image);
 
         if (waitKey(1) >= 0) break;
     }
 
-    if (files.size() > 0) {
+    if (readFromCommandLine()) {
         waitKey(-1);
     }
 
