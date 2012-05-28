@@ -27,6 +27,7 @@ vector<string> files;
 VideoCapture *capture = NULL;
 Mat image;
 int frame = 0;
+bool readEmpty = false;
 
 void processCommandLine(int argc, char* argv[]) {
     po::options_description named_opts;
@@ -63,9 +64,13 @@ void processCommandLine(int argc, char* argv[]) {
     }
 }
 
+bool readFromCommandLine() {
+    return files.size() > 0;
+}
+
 void openCamera() {
-    capture = new VideoCapture(0); // open the default camera
-    if (!capture->isOpened()) { // check if we succeeded
+    capture = new VideoCapture(0);
+    if (!capture->isOpened()) {
         cerr << "Could not open default camera." << endl;
         exit(-1);
     }
@@ -83,26 +88,54 @@ void loadModel(Modelbase& modelbase, const string& path) {
 
 void nextImage() {
     if (webcam) {
+        if (verbose) {
+            cout << "Reading from webcam                 ... ";
+        }
         *capture >> image;
+        if (verbose) {
+            cout << "[DONE]" << endl;
+        }
     } else if (files.size() > 0) {
+        if (verbose) {
+            cout << "Reading from command-line           ... ";
+        }
         image = imread(files[frame]);
+        if (verbose) {
+            cout << "[DONE]" << endl;
+        }
     } else {
         string s;
+        cout << "$ ";
         getline(cin, s);
-        image = imread(s);
+        if (verbose) {
+            cout << "Reading from standard input         ... ";
+        }
+        if (s.empty()) {
+            readEmpty = true;
+        } else {
+            image = imread(s);
+        }
+        if (verbose) {
+            if (s.empty() || !image.empty()) {
+                cout << "[DONE]" << endl;
+            } else {
+                cout << "[FAIL]" << endl;
+            }
+        }
     }
     frame++;
 }
 
 bool hasNextImage() {
-    return frame < files.size();
+    return (webcam || (!readFromCommandLine() || frame < files.size())) && !readEmpty;
 }
 
 void processImage(Detector& detector) {
     if (!image.empty()) {
+        cout << "Detecting objects on image          ... ";
         Scene scene = detector.describe(image);
-
         vector<Detection> detections = detector.detect(scene);
+        cout << "[DONE]" << endl;
 
         BOOST_FOREACH(Detection d, detections) {
             drawDetection(image, d);
@@ -110,17 +143,15 @@ void processImage(Detector& detector) {
     }
 }
 
-bool readFromCommandLine() {
-    return files.size() > 0;
-}
-
 int main(int argc, char* argv[]) {
     processCommandLine(argc, argv);
 
+    cvStartWindowThread();
     namedWindow(NAME, 1);
 
     // TODO: adapt to OpenCV 2.4.
     // TODO: remove duplication
+    // TODO: support SIFT
     Ptr<FeatureDetector> fd = new OrbFeatureDetector(1000, 1.2, 8);
     Ptr<FeatureDetector> trainFd = new OrbFeatureDetector(250, 1.2, 8);
     Ptr<DescriptorExtractor> de = new OrbDescriptorExtractor(1000, 1.2, 8);
@@ -153,16 +184,25 @@ int main(int argc, char* argv[]) {
     while (hasNextImage()) {
         nextImage();
         processImage(detector);
-        imshow(NAME, image);
-
-        if (waitKey(1) >= 0) break;
+        if (!image.empty()) {
+            imshow(NAME, image);
+            if (waitKey(1) >= 0) break;
+        }
     }
 
-    if (readFromCommandLine()) {
-        waitKey(-1);
+    if (verbose) {
+        cout << "No more images to process           ... [DONE]" << endl;
+    }
+
+    while (waitKey(10) == 0) {
+        imshow(NAME, image);
     }
 
     delete capture;
+
+    if (verbose) {
+        cout << "Quitting                            ... [DONE]" << endl;
+    }
 
     return 0;
 }
