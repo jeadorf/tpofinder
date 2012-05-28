@@ -21,42 +21,6 @@ using namespace std;
 namespace bpo = boost::program_options;
 
 int main(int argc, char** argv) {
-    // blokus 002
-    //    Mat train = (Mat_<Point2f > (4, 1) <<
-    //            Point2f(256, 156),
-    //            Point2f(250, 288),
-    //            Point2f(326, 288),
-    //            Point2f(355, 150));
-    //    Mat ref = (Mat_<Point2f > (4, 1) <<
-    //            Point2f(207, 112),
-    //            Point2f(226, 319),
-    //            Point2f(416, 365),
-    //            Point2f(468, 135));
-
-    // blokus 003
-    //    Mat train = (Mat_<Point2f > (4, 1) <<
-    //            Point2f(266, 191),
-    //            Point2f(268, 278),
-    //            Point2f(359, 274),
-    //            Point2f(360, 190));
-    //    Mat ref = (Mat_<Point2f > (4, 1) <<
-    //            Point2f(189, 94),
-    //            Point2f(217, 375),
-    //            Point2f(498, 376),
-    //            Point2f(515, 88));
-
-    //    // taco 002
-    //    Mat train = (Mat_<Point2f > (4, 1) <<
-    //            Point2f(260, 157),
-    //            Point2f(268, 305),
-    //            Point2f(436, 291),
-    //            Point2f(442, 158));
-    //    Mat ref = (Mat_<Point2f > (4, 1) <<
-    //            Point2f(276, 198),
-    //            Point2f(276, 348),
-    //            Point2f(446, 348),
-    //            Point2f(438, 212));
-
     string cfile, ofile;
     string tfile, rfile;
 
