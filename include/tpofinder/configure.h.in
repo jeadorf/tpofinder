@@ -7,6 +7,8 @@
 #ifndef CONFIGURE_H
 #define	CONFIGURE_H
 
+#include <string>
+
 namespace tpofinder {
 
     const std::string PROJECT_BINARY_DIR = "${PROJECT_BINARY_DIR}";

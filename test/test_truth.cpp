@@ -1,3 +1,4 @@
+#include "tpofinder/configure.h"
 #include "tpofinder/truth.h"
 #include "tpofinder/visualize.h"
 
@@ -21,14 +22,14 @@ public:
 };
 
 TEST_F(truth, estimateIdentity) {
-    Mat image = imread("data/test/scene-blokus-taco-1.png");
+    Mat image = imread(PROJECT_BINARY_DIR + "/data/test/scene-blokus-taco-1.png");
     Mat homography = estimator.next(image);
     EXPECT_NEAR(norm(homography - EYE_HOMOGRAPHY), 0, 0.2);
 }
 
 TEST_F(truth, estimateOneFrame) {
-    Mat image1 = imread("data/test/scene-blokus-taco-1.png");
-    Mat image2 = imread("data/test/scene-blokus-taco-2.png");
+    Mat image1 = imread(PROJECT_BINARY_DIR + "/data/test/scene-blokus-taco-1.png");
+    Mat image2 = imread(PROJECT_BINARY_DIR + "/data/test/scene-blokus-taco-2.png");
     
     Mat homography1 = estimator.next(image1);
     Mat homography2 = estimator.next(image2);

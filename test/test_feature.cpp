@@ -1,3 +1,4 @@
+#include "tpofinder/configure.h"
 #include "tpofinder/feature.h"
 
 #include <gtest/gtest.h>
@@ -12,7 +13,7 @@ class feature : public ::testing::Test {
 public:
 
     virtual void SetUp() {
-        image = imread("data/blokus/ref.jpg", 0);
+        image = imread(PROJECT_BINARY_DIR + "/data/blokus/ref.jpg", 0);
         ASSERT_FALSE(image.empty());
     }
 

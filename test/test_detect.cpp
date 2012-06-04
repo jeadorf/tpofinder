@@ -1,3 +1,4 @@
+#include "tpofinder/configure.h"
 #include "tpofinder/detect.h"
 
 #include <boost/foreach.hpp>
@@ -12,10 +13,10 @@ class detect : public ::testing::Test {
 public:
 
     virtual void SetUp() {
-        models.add("data/taco");
-        models.add("data/blokus");
+        models.add(PROJECT_BINARY_DIR + "/data/taco");
+        models.add(PROJECT_BINARY_DIR + "/data/blokus");
         detector = Detector(models);
-        image = imread("data/test/scene-blokus-taco-1.png");
+        image = imread(PROJECT_BINARY_DIR + "/data/test/scene-blokus-taco-1.png");
         scene = detector.describe(image);
     }
 
@@ -58,7 +59,7 @@ TEST_F(detect, detectTacoInScene) {
 }
 
 TEST_F(detect, detectTacoInTrainingImage) {
-    Scene trainingView = detector.describe(imread("data/taco/ref.jpg"));
+    Scene trainingView = detector.describe(imread(PROJECT_BINARY_DIR + "/data/taco/ref.jpg"));
     vector<Detection> detections = detector.detect(trainingView);
     EXPECT_GE(detections.size(), 1);
     int tacoInd = findIndex(detections, "taco");

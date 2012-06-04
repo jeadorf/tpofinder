@@ -1,6 +1,7 @@
-#include "tpofinder/visualize.h"
+#include "tpofinder/configure.h"
 #include "tpofinder/detect.h"
 #include "tpofinder/util.h"
+#include "tpofinder/visualize.h"
 
 #include <boost/format.hpp>
 #include <gtest/gtest.h>
@@ -15,9 +16,9 @@ public:
     virtual void SetUp() {
         Modelbase modelbase;
         //        modelbase.add("data/blokus");
-        modelbase.add("data/taco");
+        modelbase.add(PROJECT_BINARY_DIR + "/data/taco");
         detector = Detector(modelbase);
-        Mat image = imread("data/test/scene-blokus-taco-1.png");
+        Mat image = imread(PROJECT_BINARY_DIR + "/data/test/scene-blokus-taco-1.png");
         ASSERT_FALSE(image.empty());
         scene = detector.describe(image);
     }
@@ -99,16 +100,16 @@ TEST_F(visualize, drawDetection) {
 }
 
 TEST_F(visualize, blend) {
-    Mat h = readHomography("data/blokus/002.yml");
-    Mat src = imread("data/blokus/ref.jpg");
-    Mat dst = imread("data/blokus/002.jpg");
+    Mat h = readHomography(PROJECT_BINARY_DIR + "/data/blokus/002.yml");
+    Mat src = imread(PROJECT_BINARY_DIR + "/data/blokus/ref.jpg");
+    Mat dst = imread(PROJECT_BINARY_DIR + "/data/blokus/002.jpg");
     Mat out = blend(src, dst, h);
     imshow("visualize.blend", out);
 }
 
 TEST_F(visualize, drawModelContours) {
-    Mat out = imread("data/taco/002.jpg");
-    Mat h = readHomography("data/taco/002.yml");
+    Mat out = imread(PROJECT_BINARY_DIR + "/data/taco/002.jpg");
+    Mat h = readHomography(PROJECT_BINARY_DIR + "/data/taco/002.yml");
     drawModelContour(out, detector.modelbase().models[0], h, "taco");
     imshow("visualize.drawModelContours", out);
 }

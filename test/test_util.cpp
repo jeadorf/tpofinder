@@ -1,4 +1,5 @@
- #include "tpofinder/core.h"
+#include "tpofinder/configure.h"
+#include "tpofinder/core.h"
 #include "tpofinder/feature.h"
 #include "tpofinder/util.h"
 #include "tpofinder/visualize.h"
@@ -86,10 +87,10 @@ TEST_F(util, writeReadHomography) {
 
 TEST_F(util, invertHomography) {
     char *tmp = tmpnam(NULL);
-    bfs::path p = "data/blokus/002.yml";
+    bfs::path p = PROJECT_BINARY_DIR + "/data/blokus/002.yml";
     bfs::path q = string(tmp);
-    Mat ref = imread("data/blokus/ref.jpg");
-    Mat image002 = imread("data/blokus/002.jpg");
+    Mat ref = imread(PROJECT_BINARY_DIR + "/data/blokus/ref.jpg");
+    Mat image002 = imread(PROJECT_BINARY_DIR + "/data/blokus/002.jpg");
     Mat g = readHomography(p);
     Mat out = blend(ref, image002, g);
     imshow("util.invertHomography.normal", out);
@@ -111,7 +112,7 @@ TEST_F(util, writeReadColor) {
 }
 
 TEST_F(util, perspectiveTransformKeypointsBackAndForth) {
-    Mat image = imread("data/blokus/ref.jpg");
+    Mat image = imread(PROJECT_BINARY_DIR + "/data/blokus/ref.jpg");
     vector<KeyPoint> kpts;
     Feature f;
     f.detector->detect(image, kpts);

@@ -1,3 +1,4 @@
+#include "tpofinder/configure.h"
 #include "tpofinder/model.h"
 #include "tpofinder/util.h"
 #include "tpofinder/visualize.h"
@@ -14,8 +15,8 @@ using namespace tpofinder;
 struct model_view : public ::testing::Test {
 
     virtual void SetUp() {
-        Mat ref = imread("data/blokus/ref.jpg");
-        Mat roi = imread("data/blokus/roi.png", 0);
+        Mat ref = imread(PROJECT_BINARY_DIR + "/data/blokus/ref.jpg");
+        Mat roi = imread(PROJECT_BINARY_DIR + "/data/blokus/roi.png", 0);
         ASSERT_FALSE(ref.empty());
         ASSERT_FALSE(roi.empty());
         view = PlanarView::create(ref, roi);
@@ -28,7 +29,7 @@ struct model_view : public ::testing::Test {
 struct model_adapter : public ::testing::Test {
 
     virtual void SetUp() {
-        adapterModel = PlanarModel::load("data/adapter");
+        adapterModel = PlanarModel::load(PROJECT_BINARY_DIR + "/data/adapter");
     }
 
     PlanarModel adapterModel;
@@ -38,7 +39,7 @@ struct model_adapter : public ::testing::Test {
 struct model_blokus : public ::testing::Test {
 
     virtual void SetUp() {
-        blokusModel = PlanarModel::load("data/blokus");
+        blokusModel = PlanarModel::load(PROJECT_BINARY_DIR + "/data/blokus");
     }
 
     PlanarModel blokusModel;
@@ -48,7 +49,7 @@ struct model_blokus : public ::testing::Test {
 struct model_stockholm : public ::testing::Test {
 
     virtual void SetUp() {
-        stockholmModel = PlanarModel::load("data/stockholm");
+        stockholmModel = PlanarModel::load(PROJECT_BINARY_DIR + "/data/stockholm");
     }
 
     PlanarModel stockholmModel;
@@ -58,7 +59,7 @@ struct model_stockholm : public ::testing::Test {
 struct model_taco : public ::testing::Test {
 
     virtual void SetUp() {
-        tacoModel = PlanarModel::load("data/taco");
+        tacoModel = PlanarModel::load(PROJECT_BINARY_DIR + "/data/taco");
     }
 
     PlanarModel tacoModel;
@@ -68,7 +69,7 @@ struct model_taco : public ::testing::Test {
 struct model_tea : public ::testing::Test {
 
     virtual void SetUp() {
-        teaModel = PlanarModel::load("data/tea");
+        teaModel = PlanarModel::load(PROJECT_BINARY_DIR + "/data/tea");
     }
 
     PlanarModel teaModel;
@@ -78,8 +79,8 @@ struct model_tea : public ::testing::Test {
 struct model_simple : public ::testing::Test {
 
     virtual void SetUp() {
-        Mat ref = imread("data/blokus/ref.jpg");
-        Mat roi = imread("data/blokus/roi.png", 0);
+        Mat ref = imread(PROJECT_BINARY_DIR + "/data/blokus/ref.jpg");
+        Mat roi = imread(PROJECT_BINARY_DIR + "/data/blokus/roi.png", 0);
         ASSERT_FALSE(ref.empty());
         ASSERT_FALSE(roi.empty());
         simpleModel = PlanarModel::create("blokus", ref, roi);
@@ -92,11 +93,11 @@ struct model_simple : public ::testing::Test {
 struct model_base : public ::testing::Test {
 
     virtual void SetUp() {
-        modelbase.add("data/adapter");
-        modelbase.add("data/blokus");
-        modelbase.add("data/stockholm");
-        modelbase.add("data/taco");
-        modelbase.add("data/tea");
+        modelbase.add(PROJECT_BINARY_DIR + "/data/adapter");
+        modelbase.add(PROJECT_BINARY_DIR + "/data/blokus");
+        modelbase.add(PROJECT_BINARY_DIR + "/data/stockholm");
+        modelbase.add(PROJECT_BINARY_DIR + "/data/taco");
+        modelbase.add(PROJECT_BINARY_DIR + "/data/tea");
     }
 
     Modelbase modelbase;
@@ -230,7 +231,7 @@ TEST_F(model_blokus, consistentFeatureNumber) {
 }
 
 TEST_F(model_blokus, homographyLoaded) {
-    Mat h = readHomography("data/blokus/001.yml");
+    Mat h = readHomography(PROJECT_BINARY_DIR + "/data/blokus/001.yml");
     EXPECT_DOUBLE_EQ(norm(blokusModel.views[1].homography - h), 0);
 }
 
