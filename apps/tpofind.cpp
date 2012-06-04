@@ -10,6 +10,7 @@
 #include <iostream>
 #include <opencv2/highgui/highgui.hpp>
 
+#include "tpofinder/configure.h"
 #include "tpofinder/detect.h"
 #include "tpofinder/visualize.h"
 
@@ -147,7 +148,7 @@ int main(int argc, char* argv[]) {
     processCommandLine(argc, argv);
 
     cvStartWindowThread();
-    namedWindow(NAME, 1);
+    namedWindow(NAME, CV_WINDOW_NORMAL | CV_WINDOW_KEEPRATIO);
 
     // TODO: adapt to OpenCV 2.4.
     // TODO: remove duplication
@@ -162,11 +163,11 @@ int main(int argc, char* argv[]) {
 
     Modelbase modelbase(trainFeature);
 
-    loadModel(modelbase, "data/adapter");
-    loadModel(modelbase, "data/blokus");
-    loadModel(modelbase, "data/stockholm");
-    loadModel(modelbase, "data/taco");
-    loadModel(modelbase, "data/tea");
+    loadModel(modelbase, PROJECT_BINARY_DIR + "/data/adapter");
+    loadModel(modelbase, PROJECT_BINARY_DIR + "/data/blokus");
+    loadModel(modelbase, PROJECT_BINARY_DIR + "/data/stockholm");
+    loadModel(modelbase, PROJECT_BINARY_DIR + "/data/taco");
+    loadModel(modelbase, PROJECT_BINARY_DIR + "/data/tea");
 
     Feature feature(fd, de, dm);
 

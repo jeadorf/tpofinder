@@ -1,0 +1,17 @@
+/**
+ * Copyright (c) 2012 Andreas Heider, Julius Adorf, Markus Grimm
+ *
+ * MIT License (http://www.opensource.org/licenses/mit-license.php)
+ */
+
+#ifndef CONFIGURE_H
+#define	CONFIGURE_H
+
+namespace tpofinder {
+
+    const std::string PROJECT_BINARY_DIR = "${PROJECT_BINARY_DIR}";
+
+}
+
+#endif
+

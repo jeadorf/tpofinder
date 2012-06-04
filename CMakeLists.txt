@@ -17,6 +17,12 @@ find_package(Boost COMPONENTS filesystem program_options system)
 file(GLOB srcs src/*.cpp)
 file(GLOB tsts test/test*.cpp)
 include_directories("${PROJECT_SOURCE_DIR}/include")
+include_directories("${PROJECT_BINARY_DIR}/include")
+
+# Configure headers
+configure_file(
+    "${PROJECT_SOURCE_DIR}/include/tpofinder/configure.h.in"
+    "${PROJECT_BINARY_DIR}/include/tpofinder/configure.h")
 
 # Library construction
 add_library(${PROJECT_NAME} ${srcs})
@@ -32,6 +38,9 @@ target_link_libraries(model_homography ${PROJECT_NAME})
 target_link_libraries(sequence_homography ${PROJECT_NAME})
 target_link_libraries(invert_homography ${PROJECT_NAME})
 target_link_libraries(tpofind ${PROJECT_NAME})
+
+# Data
+file(COPY "${PROJECT_SOURCE_DIR}/data" DESTINATION "${PROJECT_BINARY_DIR}")
 
 # Testing
 enable_testing()
