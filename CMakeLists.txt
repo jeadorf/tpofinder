@@ -54,9 +54,10 @@ execute_process(
     COMMAND ${CMAKE_COMMAND} -E tar xvzf ${PROJECT_SOURCE_DIR}/gtest-1.6.0.tar.gz
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )
+
 add_subdirectory(${CMAKE_BINARY_DIR}/gtest-1.6.0)
 include_directories(${CMAKE_BINARY_DIR}/gtest-1.6.0/include)
-set(GTest_LIBRARIES gtest gtest_main)
+set(GTest_LIBRARIES gtest)
 
 add_executable(utest ${tsts})
 target_link_libraries(utest ${GTest_LIBRARIES} ${PROJECT_NAME})
