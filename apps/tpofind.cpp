@@ -187,7 +187,7 @@ int main(int argc, char* argv[]) {
         processImage(detector);
         if (!image.empty()) {
             imshow(NAME, image);
-            if (waitKey(1) >= 0) break;
+            waitKey(0);
         }
     }
 
