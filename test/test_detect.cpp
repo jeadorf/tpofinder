@@ -1,8 +1,8 @@
+#include "test.h"
 #include "tpofinder/configure.h"
 #include "tpofinder/detect.h"
 
 #include <boost/foreach.hpp>
-#include <gtest/gtest.h>
 #include <opencv2/highgui/highgui.hpp>
 #include <vector>
 

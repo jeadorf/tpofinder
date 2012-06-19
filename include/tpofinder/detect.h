@@ -84,7 +84,7 @@ namespace tpofinder {
 
     struct AcceptAllFilter : public DetectionFilter {
 
-        virtual bool accept(const Detection & detection) {
+        virtual bool accept(const Detection & /* detection */) {
             return true;
         }
     };

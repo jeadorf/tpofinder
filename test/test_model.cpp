@@ -1,3 +1,4 @@
+#include "test.h"
 #include "tpofinder/configure.h"
 #include "tpofinder/model.h"
 #include "tpofinder/util.h"
@@ -5,7 +6,6 @@
 
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
-#include <gtest/gtest.h>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
 

@@ -128,7 +128,7 @@ void nextImage() {
 }
 
 bool hasNextImage() {
-    return (webcam || (!readFromCommandLine() || frame < files.size())) && !readEmpty;
+    return (webcam || (!readFromCommandLine() || (size_t) frame < files.size())) && !readEmpty;
 }
 
 void processImage(Detector& detector) {
@@ -181,7 +181,6 @@ int main(int argc, char* argv[]) {
         openCamera();
     }
 
-    int i = 0;
     while (hasNextImage()) {
         nextImage();
         processImage(detector);

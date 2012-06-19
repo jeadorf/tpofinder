@@ -1,8 +1,8 @@
+#include "test.h"
 #include "tpofinder/configure.h"
 #include "tpofinder/truth.h"
 #include "tpofinder/visualize.h"
 
-#include <gtest/gtest.h>
 #include <opencv2/highgui/highgui.hpp>
 #include <vector>
 

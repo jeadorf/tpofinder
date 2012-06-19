@@ -1,10 +1,10 @@
+#include "test.h"
 #include "tpofinder/configure.h"
 #include "tpofinder/detect.h"
 #include "tpofinder/util.h"
 #include "tpofinder/visualize.h"
 
 #include <boost/format.hpp>
-#include <gtest/gtest.h>
 #include <opencv2/highgui/highgui.hpp>
 
 using namespace cv;

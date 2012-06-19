@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+#include "test.h"
 #include <opencv2/highgui/highgui.hpp>
 
 int main(int argc, char **argv){

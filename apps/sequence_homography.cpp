@@ -11,7 +11,7 @@ using namespace cv;
 using namespace tpofinder;
 using namespace std;
 
-int main(int argc, char** argv) {
+int main(int /* argc */, char** /* argv */) {
     cvStartWindowThread();
     namedWindow("sequence_homography");
 

@@ -1,3 +1,4 @@
+#include "test.h"
 #include "tpofinder/configure.h"
 #include "tpofinder/core.h"
 #include "tpofinder/feature.h"
@@ -5,7 +6,6 @@
 #include "tpofinder/visualize.h"
 
 #include <cstdio>
-#include <gtest/gtest.h>
 #include <opencv2/calib3d/calib3d.hpp>
 #include <opencv2/features2d/features2d.hpp>
 #include <opencv2/highgui/highgui.hpp>
