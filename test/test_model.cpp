@@ -104,6 +104,10 @@ struct model_base : public ::testing::Test {
 
 };
 
+struct model_homography_app : public ::testing::Test {
+
+};
+
 void viewModel(const string& test, const PlanarModel& model) {
     for (size_t i = 0; i < model.views.size(); i++) {
         Mat out = blend(model.views[0].image,
@@ -295,3 +299,33 @@ TEST_F(model_base, findByName) {
     EXPECT_EQ(4, modelbase.findByName("tea"));
     EXPECT_EQ(-1, modelbase.findByName("doesnotexist"));
 }
+
+TEST_F(model_homography_app, alternativeHomographyMatrix) {
+    // The model_homography executable actually produces a homography that
+    // looks fairly different from data/taco/001.yml, even though the
+    // variability in the manual selection of keypoints is not very high.
+    Mat h_org = readHomography(PROJECT_BINARY_DIR + "/data/taco/001.yml");
+    Mat h_alt = readHomography(PROJECT_BINARY_DIR + "/data/test/alternative-taco-001.yml");
+
+    Mat_<Point2f> src;
+    src.push_back(Point2f(266, 307));
+    src.push_back(Point2f(265, 301));
+    src.push_back(Point2f(373, 302));
+    src.push_back(Point2f(374, 208));
+
+    Mat_<Point2f> dst_h_org, dst_h_alt;
+    
+    perspectiveTransform(src, dst_h_org, h_org);
+    perspectiveTransform(src, dst_h_alt, h_alt);
+
+    for (size_t i = 0; i < 4; i++) {
+        Point2f p_org = dst_h_org.at<Point2f>(i);
+        Point2f p_alt = dst_h_alt.at<Point2f>(i);
+
+        EXPECT_NEAR(p_org.x, p_alt.x, 1);
+        EXPECT_NEAR(p_org.y, p_alt.y, 1);
+        // Comment out for displaying the pairs
+        // std::cout << (boost::format("%3.0f %3.0f and %3.0f %3.0f") % p_org.x % p_org.y % p_alt.x % p_alt.y) << std::endl;
+    }
+}
+
