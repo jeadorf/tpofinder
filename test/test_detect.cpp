@@ -64,7 +64,17 @@ TEST_F(detect, detectTacoInTrainingImage) {
     EXPECT_GE(detections.size(), 1);
     int tacoInd = findIndex(detections, "taco");
     EXPECT_GE(tacoInd, 0);
-    EXPECT_NEAR(norm(detections[tacoInd].homography - EYE_HOMOGRAPHY), 0, 0.2);
+
+    Mat h = detections[tacoInd].homography;
+    double n = h.at<double>(2, 2);
+
+    EXPECT_NEAR(h.at<double>(0, 0) / n, 1, 0.05);
+    EXPECT_NEAR(h.at<double>(1, 1) / n, 1, 0.05);
+    EXPECT_NEAR(h.at<double>(0, 1) / n, 0, 0.05);
+    EXPECT_NEAR(h.at<double>(1, 0) / n, 0, 0.05);
+    // Translation in pixels. Here we must accept some pixel shift.
+    EXPECT_NEAR(h.at<double>(0, 2) / n, 0, 5);
+    EXPECT_NEAR(h.at<double>(1, 2) / n, 0, 5);
 }
 
 /** For the matching process, each model is regarded as a single image with a
