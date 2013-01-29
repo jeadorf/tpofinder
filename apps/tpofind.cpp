@@ -172,8 +172,8 @@ int main(int argc, char* argv[]) {
     Feature feature(fd, de, dm);
 
     Ptr<DetectionFilter> filter = new AndFilter(
-            Ptr<DetectionFilter > (new EigenvalueFilter(-1, 4.0)),
-            Ptr<DetectionFilter > (new InliersRatioFilter(0.30)));
+            Ptr<DetectionFilter> (new EigenvalueFilter(-1, 4.0)),
+            Ptr<DetectionFilter> (new InliersRatioFilter(0.30)));
 
     Detector detector(modelbase, feature, filter);
 
@@ -186,7 +186,6 @@ int main(int argc, char* argv[]) {
         processImage(detector);
         if (!image.empty()) {
             imshow(NAME, image);
-            waitKey(0);
         }
     }
 
@@ -194,7 +193,8 @@ int main(int argc, char* argv[]) {
         cout << "No more images to process           ... [DONE]" << endl;
     }
 
-    while (waitKey(10) == 0) {
+    cout << "Waiting for key (win) or CTRL+C     ... [DONE]" << endl;
+    while (waitKey(10) == -1) {
         imshow(NAME, image);
     }
 
