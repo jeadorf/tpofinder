@@ -50,6 +50,16 @@ TEST_F(feature, computeSURF) {
     testFeature(feature, 300);
 }
 
+TEST_F(feature, computeFASTandFREAK) {
+    Feature feature("FAST", "FREAK", "BruteForce");
+    testFeature(feature, 300);
+}
+
+TEST_F(feature, computeBRISK) {
+    Feature feature("BRISK", "BRISK", "BruteForce");
+    testFeature(feature, 200);
+}
+
 /** Check whether we are able to use exotic combinations of feature detectors
  * and descriptor extractors such as ORB feature locations combined with SIFT
  * descriptors. */
