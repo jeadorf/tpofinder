@@ -3,7 +3,6 @@ project(tpofinder)
 
 # General settings
 set(BUILD_SHARED_LIBS true)
-set(CMAKE_BUILD_TYPE DEBUG)
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
