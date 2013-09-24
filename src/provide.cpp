@@ -13,22 +13,38 @@ using namespace std;
 
 namespace tpofinder {
 
-    WebcamImageProvider::WebcamImageProvider() : capture_(new VideoCapture(0)) {
-        if (!capture_->isOpened()) {
+    void WebcamImageProvider::capture_loop() {
+        cv::Mat buffer;
+        while (!stop_) {
+            capture_ >> buffer;
+            image_mutex_.lock();
+            image_ = buffer;
+            ready_.notify_one();
+            image_mutex_.unlock();
+        }
+    }
+    
+    WebcamImageProvider::WebcamImageProvider() : capture_(0), image_mutex_(),
+            image_(), ready_(), stop_(false) {
+        if (!capture_.isOpened()) {
             cerr << "Could not open default camera." << endl;
             exit(-1);
         }
+        worker_ = new thread(&WebcamImageProvider::capture_loop, std::ref(*this));
     }
 
     WebcamImageProvider::~WebcamImageProvider() {
-        delete capture_;
+        stop_ = true;
+        worker_->join();
+        delete worker_;
     }
 
-    bool WebcamImageProvider::next(Mat &image) {
-        *capture_ >> image;
+    bool WebcamImageProvider::next(cv::Mat &image) {
+        std::unique_lock<std::mutex> lock(image_mutex_);
+        ready_.wait(lock);
+        image = image_;
         return true;
     }
-
     
     bool StdinFilenameImageProvider::next(Mat &image) {
         string s;

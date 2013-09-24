@@ -93,7 +93,6 @@ int main(int argc, char* argv[]) {
     // TODO: remove duplication
     // TODO: support SIFT
     // TODO: make customizable
-    // FIXME: find a way to flush the camera or use separate thread for grabbing frames
     Ptr<FeatureDetector> fd = new OrbFeatureDetector(1000, 1.2, 8);
     Ptr<FeatureDetector> trainFd = new OrbFeatureDetector(250, 1.2, 8);
     Ptr<DescriptorExtractor> de = new OrbDescriptorExtractor(1000, 1.2, 8);

@@ -7,8 +7,12 @@
 #ifndef PROVIDE_H
 #define	PROVIDE_H
 
+#include <atomic>
+#include <condition_variable>
 #include <opencv2/highgui/highgui.hpp>
+#include <mutex>
 #include <string>
+#include <thread>
 #include <vector>
 
 namespace tpofinder {
@@ -16,8 +20,10 @@ namespace tpofinder {
     class ImageProvider {
 
       public:
+        
+        ImageProvider() = default;
 
-        // TODO: prevent copying instances of this class
+        ImageProvider(const ImageProvider&) = delete;
 
         virtual ~ImageProvider() {}
 
@@ -26,6 +32,8 @@ namespace tpofinder {
     };
 
     class WebcamImageProvider : public ImageProvider {
+
+        void capture_loop();
 
       public:
 
@@ -37,7 +45,17 @@ namespace tpofinder {
 
       private:
 
-        cv::VideoCapture *capture_;
+        cv::VideoCapture capture_;
+
+        std::mutex image_mutex_;
+
+        cv::Mat image_;
+
+        std::condition_variable ready_;
+
+        std::atomic<bool> stop_;
+
+        std::thread *worker_;
 
     };
 
