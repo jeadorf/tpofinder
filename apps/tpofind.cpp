@@ -12,6 +12,7 @@
 
 #include "tpofinder/configure.h"
 #include "tpofinder/detect.h"
+#include "tpofinder/provide.h"
 #include "tpofinder/visualize.h"
 
 using namespace cv;
@@ -24,11 +25,6 @@ const string NAME = "tpofind";
 bool verbose = false;
 bool webcam = false;
 vector<string> files;
-
-VideoCapture *capture = NULL;
-Mat image;
-int frame = 0;
-bool readEmpty = false;
 
 void processCommandLine(int argc, char* argv[]) {
     po::options_description named_opts;
@@ -65,18 +61,6 @@ void processCommandLine(int argc, char* argv[]) {
     }
 }
 
-bool readFromCommandLine() {
-    return files.size() > 0;
-}
-
-void openCamera() {
-    capture = new VideoCapture(0);
-    if (!capture->isOpened()) {
-        cerr << "Could not open default camera." << endl;
-        exit(-1);
-    }
-}
-
 void loadModel(Modelbase& modelbase, const string& path) {
     if (verbose) {
         cout << boost::format("Loading object %-20s ... ") % path;
@@ -87,51 +71,7 @@ void loadModel(Modelbase& modelbase, const string& path) {
     }
 }
 
-void nextImage() {
-    if (webcam) {
-        if (verbose) {
-            cout << "Reading from webcam                 ... ";
-        }
-        *capture >> image;
-        if (verbose) {
-            cout << "[DONE]" << endl;
-        }
-    } else if (files.size() > 0) {
-        if (verbose) {
-            cout << "Reading from command-line           ... ";
-        }
-        image = imread(files[frame]);
-        if (verbose) {
-            cout << "[DONE]" << endl;
-        }
-    } else {
-        string s;
-        cout << "$ ";
-        getline(cin, s);
-        if (verbose) {
-            cout << "Reading from standard input         ... ";
-        }
-        if (s.empty()) {
-            readEmpty = true;
-        } else {
-            image = imread(s);
-        }
-        if (verbose) {
-            if (s.empty() || !image.empty()) {
-                cout << "[DONE]" << endl;
-            } else {
-                cout << "[FAIL]" << endl;
-            }
-        }
-    }
-    frame++;
-}
-
-bool hasNextImage() {
-    return (webcam || (!readFromCommandLine() || (size_t) frame < files.size())) && !readEmpty;
-}
-
-void processImage(Detector& detector) {
+void processImage(Detector& detector, Mat &image) {
     if (!image.empty()) {
         cout << "Detecting objects on image          ... ";
         Scene scene = detector.describe(image);
@@ -179,17 +119,24 @@ int main(int argc, char* argv[]) {
 
     Detector detector(modelbase, feature, filter);
 
+    ImageProvider *image_provider;
     if (webcam) {
-        openCamera();
+        image_provider = new WebcamImageProvider();
+    } else if (files.size() > 0) {
+        image_provider = new ListFilenameImageProvider(files);
+    } else {
+        image_provider = new StdinFilenameImageProvider();
     }
 
-    while (hasNextImage()) {
-        nextImage();
-        processImage(detector);
+    Mat image;
+    while (image_provider->next(image)) {
+        processImage(detector, image);
         if (!image.empty()) {
             imshow(NAME, image);
         }
     }
+
+    delete image_provider;
 
     if (verbose) {
         cout << "No more images to process           ... [DONE]" << endl;
@@ -199,8 +146,6 @@ int main(int argc, char* argv[]) {
     while (waitKey(10) == -1) {
         imshow(NAME, image);
     }
-
-    delete capture;
 
     if (verbose) {
         cout << "Quitting                            ... [DONE]" << endl;
