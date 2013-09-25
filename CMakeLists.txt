@@ -5,7 +5,7 @@ project(tpofinder)
 set(BUILD_SHARED_LIBS true)
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
-add_definitions(-std=c++11) 
+add_definitions(-std=c++0x)
 
 # OpenCV
 find_package(OpenCV 2.4 REQUIRED)
