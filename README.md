@@ -14,7 +14,14 @@ Building tpofinder
 
 tpofinder uses CMake as build system. OpenCV 2.4 is required.
 
-`git clone https://code.google.com/p/tpofinder/ cd tpofinder mkdir build cd build cmake .. make`
+```
+git clone https://code.google.com/p/tpofinder/
+cd tpofinder
+mkdir build
+cd build
+cmake ..
+make`
+```
 
 Running tpofinder
 ------------------
